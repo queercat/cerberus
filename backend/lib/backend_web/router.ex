@@ -3,6 +3,10 @@ defmodule BackendWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
+
+    if Mix.env() == :dev do
+      plug(CORSPlug)
+    end
   end
 
   scope "/api/file", BackendWeb do
