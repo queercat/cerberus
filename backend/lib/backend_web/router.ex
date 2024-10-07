@@ -15,7 +15,15 @@ defmodule BackendWeb.Router do
   scope "/api/files", BackendWeb do
     pipe_through(:api)
 
-    post("/", FileController, :create)
     get("/", FileController, :index)
+    post("/", FileController, :create)
+  end
+
+  scope "/api/key", BackendWeb do
+    pipe_through(:api)
+
+    get("/", KeyController, :index)
+    post("/", KeyController, :create)
+    post("/validate", KeyController, :validate)
   end
 end

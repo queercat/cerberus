@@ -42,6 +42,7 @@ defmodule Backend.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:cors_plug, "~> 3.0"},
+      {:argon2_elixir, "~> 4.0"},
     ]
   end
 
