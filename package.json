@@ -1,0 +1,17 @@
+{
+  "name": "cerberus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "yarn --cwd frontend dev",
+    "backend": "yarn --cwd backend dev",
+    "dev": "concurrently \"yarn frontend\" \"yarn backend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
