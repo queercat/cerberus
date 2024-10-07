@@ -38,10 +38,14 @@ defmodule BackendWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
+    length: 1000 * 1000 * 1000 * 1000 * 10,
     json_decoder: Phoenix.json_library()
 
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  if Mix.env() == :dev do
+    plug(CORSPlug)
+  end
   plug BackendWeb.Router
 end

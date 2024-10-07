@@ -4,7 +4,7 @@ export const useGetFiles = () => {
     const [files, setFiles] = useState<{title: string, uuid: string}[]>([])
 
     const getFiles = async () => {
-        const response = await fetch('http://localhost:4000/files')
+        const response = await fetch('http://localhost:4000/api/files')
 
         const data = await response.json()
 
