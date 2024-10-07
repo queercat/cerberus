@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { useGetFiles } from './hooks/useGetFiles'
 import { File } from './components/File/File'
-import { Header } from './components/header/Header'
+import { SearchBar } from './components/SearchBar/SearchBar'
 import { LockClosedIcon, XCircleIcon } from '@heroicons/react/16/solid'
 import { encode } from 'js-base64'
 
@@ -15,6 +15,7 @@ function App() {
   const [fileData, setFileData] = useState("")
 
   const [fileType, setFileType] = useState("")
+  const [searchText, setSearchText] = useState("")
 
   useEffect(() => {
     if (!uploadOpen) {
@@ -51,9 +52,13 @@ function App() {
 
   return <>
   <div className="flex items-center bg-slate-400 flex-1 flex-col gap-4">
-    <Header setUploadOpen={setUploadOpen} />
-    <div className={"grid grid-cols-2 md:grid-cols-4 p-4 gap-4 w-full"}>
-      {files.map((file) => (
+    <SearchBar searchText={searchText} setSearchText={setSearchText}/>
+    <div className="flex w-full justify-around">
+    </div>
+    <div className={"grid grid-cols-2 md:grid-cols-4 p-4 gap-4 w-full bg-white border-slate-200 border-t-4 h-full"}>
+      {files.filter(file => {
+        return file.title.toLowerCase().includes(searchText.toLowerCase())
+      }).map((file) => (
         <File key={file.uuid} title={file.title} uuid={file.uuid} />
       ))}
     </div>
