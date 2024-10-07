@@ -24,12 +24,12 @@ defmodule BackendWeb.KeyController do
     end
   end
 
-  def validate(conn, %{"key" => key}) do
+  def validate(conn, %{"hashed_key" => key}) do
     result = Backend.Keys.validate_key(key)
 
     case result do
-      {:ok, _} -> conn |> put_status(200) |> text("Key is valid")
-      {:error, _} -> conn |> put_status(400) |> text("Key is invalid")
+      {:ok, _} -> conn |> json(%{message: "valid"})
+      {:error, _} -> conn |> json(%{message: "invalid"})
     end
   end
 end

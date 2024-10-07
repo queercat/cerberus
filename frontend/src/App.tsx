@@ -7,12 +7,13 @@ import { LockClosedIcon, XCircleIcon } from "@heroicons/react/16/solid";
 import { motion } from "framer-motion";
 import { encode } from "js-base64";
 import { Locked } from "./pages/Locked";
+import { useSessionStore } from "./stores/useSessionStore";
 
 function App() {
   const { files, getFiles } = useGetFiles();
   const [uploadOpen, setUploadOpen] = useState(false);
   const [modalClass, setModalClass] = useState(
-    "absolute z-10 hidden bg-slate-500 bg-opacity-50 min-w-full min-h-full justify-center items-center",
+    "fixed z-10 hidden bg-slate-500 bg-opacity-50 min-w-full min-h-full justify-center items-center",
   );
 
   const [title, setTitle] = useState("");
@@ -62,6 +63,8 @@ function App() {
       setTitle("");
     });
   };
+
+  const state = useSessionStore()
 
   return (
     <>
