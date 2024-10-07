@@ -3,7 +3,8 @@ defmodule BackendWeb.FileJSON do
   def show(%{file: file}) do
     %{
       title: file.title,
-      data: file.data
+      data: file.data,
+      type: file.type
     }
   end
 
@@ -11,6 +12,7 @@ defmodule BackendWeb.FileJSON do
     Enum.map(files, fn file ->
       %{
         title: file.title,
+        type: file.type,
         uuid: file.uuid
         |> Ecto.UUID.cast()
         |> elem(1)

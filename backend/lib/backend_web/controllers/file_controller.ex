@@ -6,7 +6,7 @@ defmodule BackendWeb.FileController do
   import Ecto.Query
 
   def index(conn, _params) do
-    files = Repo.all(from f in "files", select: %{title: f.title, uuid: f.uuid})
+    files = Repo.all(from f in "files", select: %{title: f.title, uuid: f.uuid, type: f.type})
     render(conn, :index, files: files)
   end
 
@@ -24,15 +24,16 @@ defmodule BackendWeb.FileController do
     end
   end
 
-  def create(conn, %{"title" => title, "data" => data}) do
-    file = File.changeset(%File{}, %{title: title, data: data})
+  def create(conn, %{"title" => title, "data" => data, "type" => type}) do
+    file = File.changeset(%File{}, %{title: title, data: data, type: type})
 
     text = case Repo.insert(file) do
       {:ok, _} ->
-        conn |> put_status(201)
+        conn = conn |> put_status(201)
         "File created"
       {:error, changeset} ->
-        conn |> put_status(400)
+        conn = conn |> put_status(400)
+        changeset |> IO.inspect()
         "Error creating file"
     end
 

@@ -5,8 +5,9 @@ defmodule Backend.Files.File do
   @primary_key {:uuid, :binary_id, autogenerate: true}
 
   schema "files" do
-    field :data, :string
+    field :data, :binary
     field :title, :string
+    field :type, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -14,7 +15,7 @@ defmodule Backend.Files.File do
   @doc false
   def changeset(file, attrs) do
     file
-    |> cast(attrs, [:data, :title])
-    |> validate_required([:data, :title])
+    |> cast(attrs, [:data, :title, :type])
+    |> validate_required([:data, :title, :type])
   end
 end

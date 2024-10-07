@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export const useGetFiles = () => {
-    const [files, setFiles] = useState<{title: string, uuid: string}[]>([])
+  const [files, setFiles] = useState<{ title: string; uuid: string }[]>([]);
 
-    const getFiles = async () => {
-        const response = await fetch('http://localhost:4000/api/files')
+  const getFiles = async () => {
+    const response = await fetch("http://localhost:4000/api/files");
 
-        const data = await response.json()
+    const data = await response.json();
 
-        setFiles(data)
-    }
+    setFiles(data);
+  };
 
-    useEffect(() => {
-        getFiles()
-    }, [])
+  useEffect(() => {
+    getFiles();
+  }, []);
 
-    return {files, getFiles}
-}
+  return { files, getFiles };
+};
