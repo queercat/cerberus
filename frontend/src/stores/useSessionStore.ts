@@ -1,16 +1,24 @@
 import { create } from "zustand";
+import { devtools, persist, PersistStorage } from "zustand/middleware";
 
-export const useSessionStore = create<{
+interface SessionState {
   locked: boolean;
-  masterEncryptionKey: string;
-
   setLocked: (locked: boolean) => void;
+  masterEncryptionKey: string;
   setMasterEncryptionKey: (masterEncryptionKey: string) => void;
-}>((set) => ({
-  locked: true,
-  masterEncryptionKey: "",
+}
 
-  setLocked: (locked: boolean) => set({ locked }),
-  setMasterEncryptionKey: (masterEncryptionKey: string) =>
-    set({ masterEncryptionKey }),
-}));
+export const useSessionStore = create<SessionState>()(
+  devtools(
+    persist(
+      (set) => ({
+        locked: true,
+        setLocked: (locked) => set({ locked }),
+        masterEncryptionKey: "",
+        setMasterEncryptionKey: (masterEncryptionKey) =>
+          set({ masterEncryptionKey }),
+      }),
+      { name: "session-store" },
+    ),
+  ),
+);

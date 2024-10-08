@@ -5,71 +5,57 @@ import { File } from "./components/File/File";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { LockClosedIcon, XCircleIcon } from "@heroicons/react/16/solid";
 import { motion } from "framer-motion";
-import { encode } from "js-base64";
 import { Locked } from "./pages/Locked";
 import { useSessionStore } from "./stores/useSessionStore";
+import { UploadModal } from "./components/UploadModal/UploadModal";
+import { encrypt } from "./utilities/encrypt";
+import CryptoJS from "crypto-js";
+import { useValidateKey } from "./hooks/useValidateKey";
+import { useUploadFile } from "./hooks/useUploadFile";
 
 function App() {
   const { files, getFiles } = useGetFiles();
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [modalClass, setModalClass] = useState(
-    "fixed z-10 hidden bg-slate-500 bg-opacity-50 min-w-full min-h-full justify-center items-center",
-  );
+  const [modalClass, setModalClass] = useState();
 
   const [title, setTitle] = useState("");
 
   const [searchText, setSearchText] = useState("");
 
-  useEffect(() => {
-    if (!uploadOpen) {
-      const newModalClass = modalClass.replace("flex", "hidden");
-      setModalClass(newModalClass);
-      return;
-    }
+  const state = useSessionStore();
+  const validateKey = useValidateKey();
 
-    const newModalClass = modalClass.replace("hidden", "flex");
-    setModalClass(newModalClass);
-  }, [uploadOpen]);
+  const { uploadFile } = useUploadFile();
 
   const handleSubmit = async () => {
-    const api = "http://localhost:4000/api/files";
     const fileInput = document.getElementById("fileInput") as HTMLInputElement;
     const file = fileInput.files![0];
 
-    const fileData = btoa(
-      new Uint8Array(await file.arrayBuffer()).reduce(
-        (data, byte) => data + String.fromCharCode(byte),
-        "",
-      ),
-    );
-
-    const fileType = file.type;
-
-    const payload = {
-      title: title,
-      data: fileData,
-      type: fileType,
-    };
-
-    fetch(api, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    }).then(() => {
-      getFiles();
-      setUploadOpen(false);
-      setTitle("");
-    });
+    await uploadFile({ file, title });
+    setUploadOpen(false);
+    setTitle("");
+    getFiles();
   };
 
-  const state = useSessionStore()
+  useEffect(() => {
+    const main = async () => {
+      if (state.masterEncryptionKey) {
+        const isValid = await validateKey.validate(state.masterEncryptionKey);
+
+        if (isValid) return;
+
+        state.setMasterEncryptionKey("");
+        state.setLocked(true);
+      }
+    };
+
+    main();
+  }, []);
 
   return (
     <>
-      <Locked />
-      <div className="flex items-center bg-slate-400 flex-1 flex-col">
+      {!state.masterEncryptionKey && <Locked />}
+      <div className="flex items-center bg-slate-300 flex-1 flex-col">
         <SearchBar
           setModal={setUploadOpen}
           searchText={searchText}
@@ -103,57 +89,14 @@ function App() {
               </motion.div>
             ))}
         </div>
-        <div className={modalClass}>
-          <dialog
-            open={uploadOpen}
-            className="pt-8 rounded-md border-r-4 border-slate-200 shadow-xl"
-          >
-            <button
-              className="absolute top-4 right-4"
-              onClick={() => setUploadOpen(false)}
-            >
-              <XCircleIcon width={24} />
-            </button>
-            <form
-              className="flex flex-col gap-2 p-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <div className="grid items-center">
-                <label htmlFor="titleInput" className="font-semibold">
-                  Title*
-                </label>
-                <input
-                  type="text"
-                  id="titleInput"
-                  value={title}
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                  }}
-                  className="bg-slate-200 p-2 rounded-md"
-                />
-              </div>
-              <div className="grid items-center">
-                <label htmlFor="fileInput" className="font-semibold">
-                  File*
-                </label>
-                <input
-                  type="file"
-                  id="fileInput"
-                  className="bg-slate-200 p-2 rounded-md"
-                />
-              </div>
-              <button
-                onClick={handleSubmit}
-                className="bg-black text-slate-200 px-4 py-2 rounded-md text-sm"
-              >
-                Upload
-              </button>
-            </form>
-          </dialog>
-        </div>
       </div>
+      <UploadModal
+        uploadOpen={uploadOpen}
+        handleSubmit={handleSubmit}
+        setUploadOpen={setUploadOpen}
+        setTitle={setTitle}
+        title={title}
+      />
     </>
   );
 }

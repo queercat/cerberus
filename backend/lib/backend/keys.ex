@@ -23,7 +23,7 @@ defmodule Backend.Keys do
 
   def get_key do
     case list_keys() do
-      [] -> nil
+      [] -> %Key{}
       keys -> keys |> hd
     end
   end

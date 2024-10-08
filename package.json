@@ -6,6 +6,7 @@
   "scripts": {
     "frontend": "yarn --cwd frontend dev",
     "backend": "yarn --cwd backend dev",
+    "db:start": "yarn --cwd backend db:start",
     "dev": "concurrently \"yarn frontend\" \"yarn backend\""
   },
   "keywords": [],

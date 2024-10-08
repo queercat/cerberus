@@ -12,8 +12,7 @@ defmodule BackendWeb.KeyController do
   def create(conn, %{"hashed_key" => hashed_key}) do
     key = Backend.Keys.get_key()
 
-
-    case key do
+    case key.hash do
       nil -> case Backend.Keys.create_key(%{hash: hashed_key})  do
         {:ok, _} -> conn |> put_status(201) |> text("Key created")
         {:error, changeset} ->
