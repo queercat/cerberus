@@ -10,6 +10,7 @@ export const File: FC<{ title: string; uuid: string }> = (props) => {
 
   const handleDownload = async () => {
     const data = await getFile(props.uuid);
+
     downloadBlob(data.data, data.title);
   };
 

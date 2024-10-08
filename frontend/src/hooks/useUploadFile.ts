@@ -1,11 +1,13 @@
 import { useSessionStore } from "../stores/useSessionStore";
+import { decrypt } from "../utilities/decrypt";
 import { encrypt } from "../utilities/encrypt";
+import CryptoJS from "crypto-js";
 
 export const useUploadFile = () => {
   const state = useSessionStore();
 
   const uploadFile = async ({ file, title }: { file: File; title: string }) => {
-    const api = "http://localhost:4000/files";
+    const api = "http://localhost:4000/api/files";
 
     // 1. Base64 encode the file
     let fileData = btoa(
@@ -18,7 +20,7 @@ export const useUploadFile = () => {
     // 2. Encrypt using the a. master encryption key with aes256, and the b. salt.
     const key = state.masterEncryptionKey;
 
-    const salt = CryptoJS.lib.WordArray.random(16).toString();
+    const salt = CryptoJS.lib.WordArray.random(16).toString().trim();
 
     fileData = encrypt(fileData, key + salt);
 

@@ -1,5 +1,5 @@
-export const decrypt = (data: string, key: string) => {
-  const decrypted = CryptoJS.AES.decrypt(data, key);
+import CryptoJS from 'crypto-js';
 
-  return decrypted.toString();
+export const decrypt = (data: string, key: string): string => {
+  return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
 };

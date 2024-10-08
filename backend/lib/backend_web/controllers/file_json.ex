@@ -4,7 +4,8 @@ defmodule BackendWeb.FileJSON do
     %{
       title: file.title,
       data: file.data,
-      type: file.type
+      type: file.type,
+      salt: file.salt
     }
   end
 

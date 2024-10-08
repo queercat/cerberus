@@ -24,8 +24,8 @@ defmodule BackendWeb.FileController do
     end
   end
 
-  def create(conn, %{"title" => title, "data" => data, "type" => type}) do
-    file = File.changeset(%File{}, %{title: title, data: data, type: type})
+  def create(conn, %{"title" => title, "data" => data, "type" => type, "salt" => salt}) do
+    file = File.changeset(%File{}, %{title: title, data: data, type: type, salt: salt})
 
     text = case Repo.insert(file) do
       {:ok, _} ->
