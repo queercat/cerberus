@@ -55,17 +55,23 @@ function App() {
   return (
     <>
       {!state.masterEncryptionKey && <Locked />}
-      <div className="flex items-center bg-slate-300 flex-1 flex-col">
+      <div className="flex flex-col min-h-screen bg-orange-200">
+        <div className="flex items-center justify-between p-8 gap-1">
+          <div className="flex items-center gap-2">
+          <p className="text-4xl font-bold">Cerberus</p>
+          <div className="flex justify-center">
+            <LockClosedIcon width={32} className="text-black" />
+          </div>
+          </div>
         <SearchBar
           setModal={setUploadOpen}
           searchText={searchText}
           setSearchText={setSearchText}
+          lockApp={() => {
+            state.setLocked(true);
+            state.setMasterEncryptionKey("");
+          }}
         />
-        <div className="flex w-full items-center p-8 gap-1">
-          <p className="text-4xl font-bold">Cerberus</p>
-          <div className="flex min-h-full justify-center">
-            <LockClosedIcon width={32} className="text-black" />
-          </div>
         </div>
         <div
           className={
