@@ -58,24 +58,24 @@ function App() {
       <div className="flex flex-col min-h-screen bg-orange-200">
         <div className="flex items-center justify-between p-8 gap-1">
           <div className="flex items-center gap-2">
-          <p className="text-4xl font-bold">Cerberus</p>
-          <div className="flex justify-center">
-            <LockClosedIcon width={32} className="text-black" />
+            <p className="text-4xl font-bold">Cerberus</p>
+            <div className="flex justify-center">
+              <LockClosedIcon width={32} className="text-black" />
+            </div>
           </div>
-          </div>
-        <SearchBar
-          setModal={setUploadOpen}
-          searchText={searchText}
-          setSearchText={setSearchText}
-          lockApp={() => {
-            state.setLocked(true);
-            state.setMasterEncryptionKey("");
-          }}
-        />
+          <SearchBar
+            setModal={setUploadOpen}
+            searchText={searchText}
+            setSearchText={setSearchText}
+            lockApp={() => {
+              state.setLocked(true);
+              state.setMasterEncryptionKey("");
+            }}
+          />
         </div>
         <div
           className={
-            "grid grid-cols-2 md:grid-cols-4 p-4 grid-rows-5 gap-x-4 w-full bg-white border-slate-200 border-t-4 min-h-full"
+            "grid grid-cols-2 md:grid-cols-4 p-4 auto-rows-min gap-y-4 gap-x-4 w-full bg-white border-slate-200 border-t-4 min-h-full"
           }
         >
           {files

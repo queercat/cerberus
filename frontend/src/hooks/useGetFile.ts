@@ -12,7 +12,10 @@ export const useGetFile = () => {
 
     return {
       ...data,
-      data: base64StringToBlob(decrypt(data.data, session.masterEncryptionKey + data.salt.trim()), data.type),
+      data: base64StringToBlob(
+        decrypt(data.data, session.masterEncryptionKey + data.salt.trim()),
+        data.type,
+      ),
     };
   };
 
