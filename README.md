@@ -1,4 +1,5 @@
 # Cerberus
+encrypted file storage application, frontend React, backend Phoenix.
 this is a monorepo managed by yarn.
 
 ![Cerberus Screenshot](assets/screen_0.png)
