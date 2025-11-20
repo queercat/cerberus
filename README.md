@@ -1,6 +1,8 @@
 # Cerberus
 this is a monorepo managed by yarn.
 
+![Cerberus Screenshot](assets/screen_0.png)
+
 # Requirements
 
 - Node.js >= 20 https://nodejs.org/en/download
