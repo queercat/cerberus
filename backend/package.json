@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "concurrently 'mix phx.server' 'yarn db:start'",
+    "dev": "concurrently \"mix phx.server\" \"yarn db:start\"",
     "db:start": "docker-compose -f docker-compose.database.yml up"
   },
   "keywords": [],
