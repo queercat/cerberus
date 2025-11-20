@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "predev": "mix deps.get",
     "dev": "concurrently \"mix phx.server\" \"yarn db:start\"",
     "db:start": "docker-compose -f docker-compose.database.yml up"
   },
